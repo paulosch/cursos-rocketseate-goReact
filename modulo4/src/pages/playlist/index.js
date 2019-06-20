@@ -1,20 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Creators as PlaylistDetailsActions } from '../../store/ducks/playlistDetails'
+import { Creators as PlayerActions } from '../../store/ducks/player'
 import Loading from '../../components/Loading'
 
-import { Container, Header, SongList } from './styles'
+import { Container, Header, SongList, SongItem } from './styles'
 import ClockIcon from '../../assets/images/clock.svg'
 import PlusIcon from '../../assets/images/plus.svg'
 
 const Playlist = props => {
+  const [selectedSong, setSong] = useState(null)
+
   const dispatch = useDispatch()
+  const { id } = props.match.params
+
   const { data: playlist, loading } = useSelector(
     state => state.playlistDetails
   )
-  const { id } = props.match.params
+
+  const currentSong = useSelector(state => state.player.currentSong)
 
   useEffect(() => {
     dispatch(PlaylistDetailsActions.getPlaylistDetailsRequest(id))
@@ -53,7 +59,15 @@ const Playlist = props => {
               </tr>
             ) : (
               playlist.songs.map(song => (
-                <tr key={song.id}>
+                <SongItem
+                  key={song.id}
+                  onClick={() => setSong(song.id)}
+                  onDoubleClick={() =>
+                    dispatch(PlayerActions.loadSong(song, playlist.songs))
+                  }
+                  selected={selectedSong === song.id}
+                  playing={currentSong && currentSong.id === song.id}
+                >
                   <td>
                     <img src={PlusIcon} alt="Adicionar" />
                   </td>
@@ -61,7 +75,7 @@ const Playlist = props => {
                   <td>{song.author}</td>
                   <td>{song.album}</td>
                   <td>3:26</td>
-                </tr>
+                </SongItem>
               ))
             )}
           </tbody>
@@ -99,7 +113,8 @@ Playlist.protoTypes = {
       )
     }),
     loading: PropTypes.bool
-  }).isRequired
+  }).isRequired,
+  loadSong: PropTypes.func.isRequired
 }
 
 export default Playlist

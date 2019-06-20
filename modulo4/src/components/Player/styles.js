@@ -9,6 +9,7 @@ export const Container = styled.div`
   padding: 12px;
 `
 export const Current = styled.div`
+  width: 220px;
   display: flex;
   align-items: center;
 
@@ -22,12 +23,12 @@ export const Current = styled.div`
     display: flex;
     flex-direction: column;
 
-    span{
+    span {
       font-size: 13px;
       color: #fff;
     }
 
-    small{
+    small {
       font-size: 11px;
       color: #b3b3b3;
       margin-top: 5px;
@@ -44,7 +45,7 @@ export const Controls = styled.div`
   display: flex;
   align-items: center;
 
-  button{
+  button {
     background: transparent;
     border: 0;
     margin: 0 15px;
@@ -56,7 +57,7 @@ export const Time = styled.div`
   align-items: center;
   margin-top: 5px;
 
-  span{
+  span {
     font-size: 11px;
     color: #b3b3b3;
   }
@@ -73,7 +74,7 @@ export const Volume = styled.div`
   width: 100px;
   margin-right: 20px;
 
-  img{
+  img {
     margin-right: 5px;
   }
 `
